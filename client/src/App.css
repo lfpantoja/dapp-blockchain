@@ -1,0 +1,83 @@
+/* Custom page CSS
+-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+
+.container {
+  width: auto;
+  max-width: 680px;
+  padding: 0 15px;
+}
+
+.footer {
+  background-color: #dcf5ff;
+}
+
+code {
+  display: block;
+  margin: 20px 0 15px 0;
+  padding: 10px;
+  background: #eee;
+}
+
+.jumbo {
+  margin-top: 5rem;
+  margin-bottom: 5rem;
+}
+
+.btn-read {
+  font-size: 2.3em !important; /*1.32875rem;*/ 
+}
+
+.btn-side {
+  padding: 0.8rem 1rem;
+  line-height: 3;
+  border-radius: 0.3em !important;
+}
+
+h2 {
+  text-transform: uppercase;
+}
+
+.submission-authors {
+  font-style: italic;
+}
+
+.submission-abstract {
+  text-align: justify;
+}
+
+.navbar {
+  margin-bottom: 30px;
+}
+
+.content {
+  min-height: 100px;
+}
+
+
+.green{
+  color: limegreen;
+}
+
+.red{
+  color: red;
+}
+
+.no-network{
+  background-color: yellow;
+}
+
+.network-name{
+  margin-left: 10px;
+}
+
+.submission{
+  border-bottom: solid 1px black;
+  margin-bottom: 10px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.loader{
+  position: relative;
+}
