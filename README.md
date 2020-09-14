@@ -1,86 +1,86 @@
-# Dapp Blockchain
+# Dapp Blockchain (Ubuntu LTS 20.04.1)
 
-This project is a Decentralized Application (dApp) running on the Ethereum Blockchain.
+Este proyecto es una aplicación descentralizada (dapp) funcionando en una red Blockchain de Ethereum.
 
-This project allows:
-- Use InterPlanetary File System (IPFS ) to save arbitrary text.
-- Save text paper from web browser.
+El proyecto permite:
+- Usar la tecnología InterPlanetary File System (IPFS) para guardar texto.
+- Guardar papers.
 
-Has a cost in gas (Ether) by the contract: 0.001 ETH
+El contrato tiene un gasto de gas de 0.001 ETH
 
-## Tools
+## Versiones de las herramientas usadas
 
-- Truffle 5.1.43
-- Solidity 0.5.16
-- React js 16.13.1
+-	Truffle 5.1.43
+-	Solidity 0.5.16
+-	React js 16.13.1
 -	Ganache 2.4.0
 -	NodeJS 10.22.0
 -	Metamask for Firefox 8.0.9
-- IPFS 0.6.0
+-	IPFS 0.6.0
 
-## Running locally
+## Funcionamiento Local
 
-### Install Dependencies
+### Instalación de Dependencias
 
-1.	Install NodeJS
+1.	Instalar NodeJS
 
 `curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -`
 
 `sudo apt-get install -y nodejs`
 
-Also install
+También instalar
 
 `apt-get install -y build-essential`
 
-NodeSource's NodeJS package contains the Node and NPM binary, so you don't need to install NPM separately.
+El paquete proporcionado por NodeSource's de NodeJS contiene Node y NPM, así que no se debe instalar NPM por separado.
 
-2.	Download and execute Ganache GUI from ([Official Web](https://github.com/trufflesuite/ganache/releases)), make sure to download the lastest version of Ganache AppImage.
+2.	Descargar e ejecutar Ganache GUI de ([Web Oficial](https://github.com/trufflesuite/ganache/releases)), asegurarse de descargar la última versión de Ganache AppImage.
 
-	(For this project it was downloaded **ganache-2.4.0-linux-x86_64.AppImage**)
+	(Para este proyecto se descargó  **ganache-2.4.0-linux-x86_64.AppImage**)
 
-3.	Install Truffle Framework with
+3.	Instalar Truffle Framework con
 
 `npm install -g truffle`
 
-4. Install Metamask extension for Firefox browser ([Firefox ADD-ONS](https://addons.mozilla.org/en-US/firefox/addon/ether-metamask))
+4. Instalar la extensión de Metamask para el navegador Firefox ([Firefox ADD-ONS](https://addons.mozilla.org/en-US/firefox/addon/ether-metamask))
 
-5.	Install IPFS
+5.	Instalar IPFS
 
 `npm install ipfs`
 
-### Project Development
+### Desarrollo del Proyecto
 
-1.	Create a directory for the project and go to the directory
+1.	Crear el directorio para el proyecto, luego ir al directorio creado
 
 `mkdir dapp-blockchain`
 
 `cd dapp-blockchain`
 
-2.	For a default set of contracts and tests
+2.	Para crear las carpetas predeterminadas
 
 `truffle init`
 
-3.	Configure truffle-config.js to connect to ganache.
+3.	Configurar truffle-config.js para conectarse con ganache (Ver truffle-config.js).
 
-4.	Codify the contract. (See dapp-blockchain/contracts/Publications.sol)
+4.	Codificar el contrato. (Ver dapp-blockchain/contracts/Publications.sol)
 
-5.	Create directory client for de client-side and inside of the client directory, create a package.json this helps to install dependencies for the client-side, testting smart contracts and more. (See dapp-blockchain/client/package.json)
+5.	Crear el directorio client para el lado del cliente y dentro del directorio, crear package.json este archivo ayudará a instalar las dependencias necesarias. (Ver dapp-blockchain/client/package.json)
 
-6.	Codify de client side with React. (See /dapp-blockchain/client)
+6.	Codificar el lado del cliente con React. (Ver /dapp-blockchain/client)
 
-7.	After of codify de client side of this app go to the	dapp-blockchain folder (root folder)	and execute
+7.	Después de codificar el lado del cliente, ir al directorio raíz	(dapp-blockchain) y ejecutar
 
 `truffle compile`
 
 `truffle migrate --network development`
 
-8.	Next, enter in the client folder, and execute
+8.	Luego, ir al directorio client (NPM tardará en instalar), y ejecutar 
 
 `npm install`
 
 `npm run start`
 
-9.	In the browser, select the ganache url in Metamask Extension and finally go to `http://localhost:3000/`
+9.	En el navegador, seleccionar la red ganache usada en la extensión de Metamask y finalmente ir a la dirección `http://localhost:3000/`
 
 
 
