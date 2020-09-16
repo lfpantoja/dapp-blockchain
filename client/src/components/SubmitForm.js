@@ -1,7 +1,9 @@
 import React, {Component} from 'react'
 import {Form, FormControl, Button, Alert, Row, Col} from 'react-bootstrap';
 
+
 var Loader = require('react-loader');
+let ax = [];
 
 class SubmitForm extends Component {
   constructor(props) {
@@ -49,7 +51,23 @@ class SubmitForm extends Component {
   }
 
   loadPrice() {
+    ax = [];
     console.log(this.props);
+    //Carga de papers, para evitar duplicidad
+    let submissionAux = {};
+    this.props.hashStoreContractInstance.getLastPaperId().then((values) => {
+      for(let i = 1;i<=values.words[0];i++){
+        this.props.hashStoreContractInstance.getPaperByID(i).then(async (values) => {
+          submissionAux.hashContent = values[1];
+          await this.props.ipfs.catJSON(submissionAux.hashContent, async (err, dataAux) => {
+            ax.push(dataAux.title);
+            console.log(ax.length);
+            this.props.addNotification(ax+"_", "success");
+          });
+        });
+      }
+    });
+    
     this.props.hashStoreContractInstance.price().then((result) => { 
       this.setState({price: result.toString()});
       }
@@ -77,7 +95,10 @@ class SubmitForm extends Component {
     let {fullName, title, text} = this.state;
     let data = {fullName, title, text};
     let {buffer} = this.state;
-
+    let submissionAux = {};
+    let auxRep = 0;
+    let auxNoRep = 0;
+    
     this.setState({savingText: true});
 
     this.props.ipfs.add(buffer, (err, fileHash) => {
@@ -98,19 +119,70 @@ class SubmitForm extends Component {
         console.log("IPFS hash:", hash);
         console.log("Direccion eth:", this.props.web3.eth.defaultAccount);
         console.log("Direccion eth:", this.props.hashStoreContractInstance);
+        
+        if(ax.length === 0){
 
-        this.props.hashStoreContractInstance.saveNewPaper(hash, {from: this.props.web3.eth.defaultAccount, value: this.state.price, gas: 200000}).then((result) => {
+          this.props.hashStoreContractInstance.saveNewPaper(hash, {from: this.props.web3.eth.defaultAccount, value: this.state.price, gas: 200000}).then((result) => {
+            
+            this.setState({savingText: false});
+            console.log('Paper guardado, Tx:', result.tx);
+            let log = result.logs[0];
+            let hashId = log.args._hashId.toNumber();
+            this.props.addNotification(`Paper guardado Vacio! Paper ID: ${hashId}`, "success");
+            
+          }).catch((err) => {
+            this.setState({savingText: false});
+            this.props.addNotification(err.message, "error");
+          });
 
-          this.setState({savingText: false});
-          console.log('Paper guardado, Tx:', result.tx);
-          let log = result.logs[0];
-          let hashId = log.args._hashId.toNumber();
-          this.props.addNotification(`Paper guardado ! Paper ID: ${hashId}`, "success");
+        }else{
 
-        }).catch((err) => {
-          this.setState({savingText: false});
-          this.props.addNotification(err.message, "error");
+
+        for(let aa=1;aa<=ax.length;aa++){
+        //Comprobacion de Paper duplicado
+        this.props.hashStoreContractInstance.getPaperByID(aa).then(async (values) => {
+          console.log("x");
+          submissionAux.hashContent = values[1];
+          await this.props.ipfs.catJSON(submissionAux.hashContent, async (err, dataAux) => {
+          if(ax.length === 0){
+            
+          }else{
+            submissionAux.title = dataAux.title;
+            console.log("..",submissionAux.title);
+            if (submissionAux.title === data.title){
+              auxRep = auxRep + 1;
+              console.log("PAPER REPETIDO");
+              this.setState({savingText: false});
+              this.props.addNotification("Paper Repetido","error");
+            }else{
+              
+                if(auxRep<1 && aa===ax.length){
+                  console.log("Start");
+                  //Si no hay duplicados se ingresa paper
+                  await this.props.hashStoreContractInstance.saveNewPaper(hash, {from: this.props.web3.eth.defaultAccount, value: this.state.price, gas: 200000}).then((result) => {
+                    this.setState({savingText: false});
+                    console.log('Paper guardado, Tx:', result.tx);
+                    let log = result.logs[0];
+                    let hashId = log.args._hashId.toNumber();
+                    this.props.addNotification(`Paper guardado ! Paper ID: ${hashId}`, "success");
+                    window.location.reload(10000);
+                  }).catch((err) => {
+                    this.setState({savingText: false});
+                    this.props.addNotification(err.message, "error");
+                  });
+                }else{
+                  console.log("PAPER REPETIDO x");
+                  this.setState({savingText: false});
+                  //this.props.addNotification("Paper Repetido 2","error");
+                }
+              
+            }
+          }
+          });
         });
+
+      }}
+
       });
     });
   }
@@ -123,13 +195,11 @@ class SubmitForm extends Component {
     if (!this.props.hashStoreContractInstance) {
       return false;
     }
-
     return this.state.fullName && this.state.title && this.state.text && this.state.buffer;
   }
 
   render() {
     return (
-      
       <div className="SubmitForm">
       <center>
         <Loader loaded={!this.state.loadingVersion}>
