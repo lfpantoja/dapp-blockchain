@@ -24,7 +24,7 @@ class RecentSubmissions extends Component {
       let recentSubmissions = [];
       let lastHashId = await this.props.hashStoreContractInstance.lastPaperId();
       lastHashId = lastHashId.toNumber();
-      const startHashId = Math.max(1, lastHashId - 5);
+      const startHashId = Math.max(1, lastHashId - 10);
       for (let i = lastHashId; i >= startHashId; i--) {
         let submission = await this.loadSubmission(i);
         recentSubmissions.push(submission);
