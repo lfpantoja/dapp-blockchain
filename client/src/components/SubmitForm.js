@@ -128,8 +128,8 @@ class SubmitForm extends Component {
             console.log('Paper guardado, Tx:', result.tx);
             let log = result.logs[0];
             let hashId = log.args._hashId.toNumber();
-            this.props.addNotification(`Paper guardado Vacio! Paper ID: ${hashId}`, "success");
-            
+            this.props.addNotification(`Paper guardado! Paper ID: ${hashId}`, "success");
+            window.location.reload(10000);
           }).catch((err) => {
             this.setState({savingText: false});
             this.props.addNotification(err.message, "error");
