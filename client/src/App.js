@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import HashStoreContract from './contracts/Publications.json'
 import getWeb3 from './utils/getWeb3'
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
-import {Container, Row, Col} from 'react-bootstrap';
+import {Container} from 'react-bootstrap';
 import SubmitForm from './components/SubmitForm';
 import RecentSubmissions from './components/RecentSubmissions';
 import FetchForm from './components/FetchForm';

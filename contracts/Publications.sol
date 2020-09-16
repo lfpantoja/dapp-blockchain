@@ -3,7 +3,6 @@ pragma solidity >=0.4.22 <0.8.0;
 contract Publications {
 
     //Eventos
-    event OwnershipTransferred(address indexed _previousOwner, address indexed _newOwner);
     event NewPaperStored(address indexed _hashSender, uint _hashId, string _hashContent, uint timestamp);
     event Withdrawn(address indexed _hashSender, uint amount);
 
@@ -52,20 +51,6 @@ contract Publications {
     }
 
     /**
-    * @dev transferOwnership - Transferencia de propiedad de contrato
-    * @param _newOwner Direccion de nuevo dueno
-    */
-    function transferOwnership(address _newOwner) onlyOwner public {
-        // Verificacion si direccion es nula
-        require(_newOwner != address(0));
-
-        // Se asigna nuevo dueno
-        owner = _newOwner;
-        // Log
-        emit OwnershipTransferred(owner, _newOwner);
-    }
-
-    /**
     * @dev withdrawBalance - Retiro de saldo acumulado de contrato en ETH
     */
     function withdrawBalance() onlyOwner public {
@@ -100,7 +85,7 @@ contract Publications {
     function saveNewPaper(string memory _hashContent) payable public {
         // Solo se guarda si se pagó el servicio
         require(msg.value >= price);
-
+        
         // crear Hash
         uint paperId = savePaper(_hashContent);
         // Log
@@ -113,13 +98,6 @@ contract Publications {
     */
     function getPaperByID(uint _id) view public returns (address hashSender, string memory hashContent, uint hashTimestamp, uint hashNumVersions) {   
         return (papers[_id].sender,papers[_id].content, papers[_id].timestamp,papers[_id].versions.length); 
-    }
-
-    /**
-    * @dev Encontrar version con id
-    */
-    function getVersionByID(uint _paperId, uint _verId) view public returns (uint _version) {
-        return papers[_paperId].versions[_verId];
     }
 
     /**
