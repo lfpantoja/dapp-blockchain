@@ -51,19 +51,6 @@ contract Publications {
     }
 
     /**
-    * @dev withdrawBalance - Retiro de saldo acumulado de contrato en ETH
-    */
-    function withdrawBalance() onlyOwner public {
-        uint amount = address(this).balance;
-        address payable ownerp = address(uint160(owner));
-
-        // transferencia de balance
-        ownerp.transfer(address(this).balance);
-        // Log
-        emit Withdrawn(owner, amount);
-    }
-
-    /**
     * @dev savePaper - Guardar paper
     * @param _hashContent Contenido Hash
     */
