@@ -8,7 +8,7 @@ let ax = [];
 class SubmitForm extends Component {
   constructor(props) {
     super(props);
-    this.getPaperx = this.getPaperx.bind(this);
+    this.getPaperS = this.getPaperS.bind(this);
     this.state = {
       loadingPrice: false,
       fullName: '',
@@ -135,12 +135,12 @@ class SubmitForm extends Component {
             let log = result.logs[0];
             let hashId = log.args._hashId.toNumber();
             this.props.addNotification(`Paper guardado! Paper ID: ${hashId}`, "success");
-            
+            window.location.reload(10000);
           }).catch((err) => {
             this.setState({savingText: false});
             this.props.addNotification(err.message, "error");
           });
-          window.location.reload(10000);
+          //window.location.reload(10000);
         }else{
         for(let aa=1;aa<=ax.length;aa++){
         //Comprobacion de Paper duplicado
