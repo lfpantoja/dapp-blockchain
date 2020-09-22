@@ -105,7 +105,6 @@ class SubmitForm extends Component {
     let {buffer} = this.state;
     let submissionAux = {};
     let auxRep = 0;
-    let auxNoRep = 0;
     
     this.setState({savingText: true});
 
