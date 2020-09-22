@@ -79,7 +79,7 @@ class RecentSubmissions extends Component {
       <div>
         <IntroJumbo/>
         <div className="mt-2 latest-preprints">
-          <h3>Ultimos Papers</h3>
+          <h3>Últimos Papers</h3>
           <div className="submissions">
           <Loader loaded={!this.state.loadingRecentSubmissions}>
             {this.state.recentSubmissions.map((submission) => this.renderSubmission(submission))}
