@@ -4,7 +4,6 @@ contract Publications {
 
     //Eventos
     event NewPaperStored(address indexed _hashSender, uint _hashId, string _hashContent, uint timestamp);
-    event Withdrawn(address indexed _hashSender, uint amount);
 
     //Estructura
     struct Paper {
