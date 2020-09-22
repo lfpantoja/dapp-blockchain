@@ -91,9 +91,7 @@ class FetchForm extends Component {
         <Col xs={3}>
           <div className="my-3">
           <Button href={"https://ipfs.infura.io:5001/api/v0/cat/"+submission.file} 
-          className="mt-3 btn-side btn-read" variant="primary" size="lg">Visualizar</Button>
-          </div>
-          <div className="my-3">
+          className="mt-3 btn-side btn-read" variant="primary" size="dark">Visualizar</Button>
           </div>
         </Col>
         </Row>
