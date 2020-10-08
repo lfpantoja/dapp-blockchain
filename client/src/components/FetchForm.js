@@ -109,6 +109,7 @@ class FetchForm extends Component {
           const amount = 0.00100000; //Monto a enviar
           const amountToSend = this.props.web3.utils.toWei(amount.toString(), "ether"); //convertir a wei
           var send = this.props.web3.eth.sendTransaction({from:cuentaActual,to:toAddress, value:amountToSend});
+          this.props.addNotification("Reconocimiento realizado", "success");
         }
       }).catch((err) => {
         return reject(err);
