@@ -154,10 +154,6 @@ class FetchForm extends Component {
     );
   }
 
-  // updateHashId(e) {
-  //   this.setState({'hashId': e.target.value});
-  // }
-
   render() {
     return (
       <div className="show-submission">
