@@ -133,7 +133,7 @@ class App extends Component {
         <Router>
         <NotificationSystem ref="notificationSystem"/>
 
-        <Header web3={this.state.web3} loadingWeb3={this.state.loadingWeb3} networkName={this.state.networkName}/>
+        <Header web3={this.state.web3} loadingWeb3={this.state.loadingWeb3}/>
         
         <main className="flex-fill flex-shrink-0">
             <Container>
