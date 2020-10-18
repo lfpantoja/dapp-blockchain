@@ -3,7 +3,7 @@ import {Form, FormControl, Button, Alert, Row, Col} from 'react-bootstrap';
 
 
 var Loader = require('react-loader');
-let ax = [];
+let ax = [];  //variable para cargar papers ingresados y evitar duplicidad
 
 class SubmitForm extends Component {
   constructor(props) {
@@ -19,38 +19,14 @@ class SubmitForm extends Component {
   }
 
   componentDidMount() {
-    if (this.props.match.params.id) {
-      this.loadSubmission(this.props.match.params.id);
-    }
+    
   }
 
   UNSAFE_componentWillMount() {
     this.loadPrice();
   }
 
-  loadSubmission(hashId) {
-    return new Promise((resolve, reject) => {
-      
-      let submission = {};
-      this.props.hashStoreContractInstance.getPaperByID(hashId).then((values) => {
-        submission.sender = values[0];
-        submission.hashContent = values[1];
-        submission.timestamp = values[2].toNumber();
-        submission.hashId = hashId;
-        if (submission.timestamp === 0) {
-          this.props.addNotification("Paper inexsistente", "error");
-          return reject("NO se encuentra paper")
-        }
-        this.setState({submission: submission});
-        resolve(submission);
-      }).catch((err) => {
-        
-        return reject(err);
-      });
-    });
-  }
-
-  //Carga de papers, para evitar duplicidad
+  //Carga de papers para comparar
   async getPaperS() {
     let submissionAux = {};
     let numA = 0;
@@ -62,7 +38,6 @@ class SubmitForm extends Component {
           await this.props.ipfs.catJSON(submissionAux.hashContent, async (err, dataAux) => {
             ax.push(dataAux.title);
             console.log(ax.length);
-            //this.props.addNotification(ax+"_", "success");
             if(i===numA){
               this.props.addNotification("Carga Completa", "success");
             }
@@ -99,6 +74,7 @@ class SubmitForm extends Component {
     this.setState({buffer});
   };
 
+  //Funcion para guardar paper
   saveText() {
     let {fullName, title, text} = this.state;
     let data = {fullName, title, text};
@@ -115,7 +91,7 @@ class SubmitForm extends Component {
       }
       data.file=fileHash;
       console.log("IPFS hash:", fileHash);
-
+      //Se crea JSON par guardarlo con ipfs
       this.props.ipfs.addJSON(data, (err, hash) => {
         if (err) {
           this.setState({savingText: false});
@@ -126,10 +102,9 @@ class SubmitForm extends Component {
         console.log("IPFS hash:", hash);
         console.log("Direccion eth:", this.props.web3.eth.defaultAccount);
         console.log("Direccion eth:", this.props.hashStoreContractInstance);
-        
+        //se guarde paper de inmediato cuando sea vacio
         if(ax.length === 0){
           this.props.hashStoreContractInstance.saveNewPaper(hash, {from: this.props.web3.eth.defaultAccount, value: this.state.price, gas: 200000}).then((result) => {
-            
             this.setState({savingText: false});
             console.log('Paper guardado, Tx:', result.tx);
             let log = result.logs[0];
@@ -140,25 +115,24 @@ class SubmitForm extends Component {
             this.setState({savingText: false});
             this.props.addNotification(err.message, "error");
           });
-          //window.location.reload(10000);
         }else{
+        //compara lo ingresado con cada paper cargado y lo guardara si no hay repetidos
         for(let aa=1;aa<=ax.length;aa++){
         //Comprobacion de Paper duplicado
         this.props.hashStoreContractInstance.getPaperByID(aa).then(async (values) => {
-          console.log("x");
           submissionAux.hashContent = values[1];
           await this.props.ipfs.catJSON(submissionAux.hashContent, async (err, dataAux) => {
           if(ax.length === 0){
             
           }else{
             submissionAux.title = dataAux.title;
-            console.log("..",submissionAux.title);
             if (submissionAux.title === data.title){
               auxRep = auxRep + 1;
               console.log("PAPER REPETIDO");
               this.setState({savingText: false});
               this.props.addNotification("Paper Repetido","error");
             }else{
+              //cuando se acabe el for y no haya repetidos se guardara
               if(auxRep<1 && aa===ax.length){
                 console.log("Start");
                 //Si no hay duplicados se ingresa paper
@@ -201,10 +175,11 @@ class SubmitForm extends Component {
     return (
       <div className="SubmitForm">
       <center>
-        <Loader loaded={!this.state.loadingVersion}>
+        <Loader loaded={!this.state.savingText}>
           {this.props.match.params.id && !this.state.submission ? (
             <Alert variant="danger">
-            ERROR: Paper ID {this.props.match.params.id} no encontrado.
+            ERROR: Paper ID {this.props.match.params.id} no encontrado
+            Este es un formulario de ingreso más no de búsqueda.
           </Alert>
           ) : ( 
           <div>
