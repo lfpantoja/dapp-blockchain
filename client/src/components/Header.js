@@ -18,6 +18,9 @@ class Header extends Component{
                     <LinkContainer to="/submit">
                     <Nav.Link to="/submit">Registrar</Nav.Link>
                     </LinkContainer>
+                    <LinkContainer to="/search">
+                    <Nav.Link to="/search">Buscar</Nav.Link>
+                    </LinkContainer>
                     </Nav>
                     
                 </Navbar.Collapse>
