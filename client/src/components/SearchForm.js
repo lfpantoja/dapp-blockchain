@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Form, FormControl, Button, Alert, Row, Col} from 'react-bootstrap';
+import {Form, FormControl, Button, Row, Col} from 'react-bootstrap';
 
 var Loader = require('react-loader');
 
@@ -19,7 +19,6 @@ class SearchForm extends Component {
 
   //Función para cargar los papers segun el autor ingresado por el usuario
   async loadSearchSubmissions(Autor) {
-    let {autor} = this.state;
     console.log("parametro: ", Autor);
     
     this.setState({loadingSearchSubmissions: true, searchSubmissions: []});
