@@ -3,6 +3,7 @@ import {Jumbotron} from 'react-bootstrap';
 import '../App.css'
 import '../css/bootstrap.css';
 
+//Mensaje de bienvenida
 class IntroJumbo extends Component {
   render() {
     return (

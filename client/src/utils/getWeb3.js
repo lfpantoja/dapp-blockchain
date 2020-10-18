@@ -6,6 +6,7 @@ let getWeb3 = new Promise(function (resolve, reject) {
     getAccount();
   });
 
+  //Conexión al ganache y se escoge la cuenta que este seleccionada en el metamask
   async function getAccount() {
     let web3 = window.web3;
     if (typeof web3 !== 'undefined') {
@@ -26,6 +27,7 @@ let getWeb3 = new Promise(function (resolve, reject) {
     resolve({web3: web3});
   }
   
+  //SI hay un cambio de cuenta, se actualizará con la seleccionada
   window.ethereum.on('accountsChanged', function (accounts) {
     getAccount();
     window.location.reload(10000);

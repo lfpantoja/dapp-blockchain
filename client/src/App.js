@@ -31,6 +31,7 @@ class App extends Component {
     }
   }
 
+  //definición del sistema de notificaciones en react
   addNotification(message, level) {
     this._notificationSystem.addNotification({
       message: message,
@@ -39,10 +40,11 @@ class App extends Component {
     });
   }
 
+  //funcion que se ejecuta al cargar pagina en el lado del cliente
   UNSAFE_componentWillMount() {
-
   }
 
+  //funcion que se ejecuta al cargar pagina en el lado del servidor y el cliente
   componentDidMount() {
     this.setupWeb3((err) => {
       if (err) {
@@ -55,6 +57,7 @@ class App extends Component {
     this.addNotification("Bienvenido !", "success")
   }
 
+  //Nos conectamos al metamask
   setupWeb3(cb) {
     this.setState({loadingWeb3: true,loadingContract:true,});
     getWeb3.then(results => {
@@ -96,7 +99,7 @@ class App extends Component {
           web3: web3,
           networkName: networkName
         });
-        cb();
+        cb();//es una funcion de node para retornar algun error
         console.log("Red: ",this.state.networkName);
       });
     }).catch((err) => {
@@ -105,11 +108,13 @@ class App extends Component {
     });
   }
 
+  //definimos el protocolo ipfs
   setupIpfs() {
     const ipfs = new IPFS({host: 'ipfs.infura.io', port: 5001, protocol: 'https'});
     this.setState({ipfs: ipfs});
   }
 
+  //instanciamos/cargamos contrato
   instantiateContract() {
     this.setState({loadingContract: true,});
     console.log("Cargando Contrato")
@@ -125,6 +130,8 @@ class App extends Component {
     });
   }
 
+  //mensaje de error si no hay conexion de matamask con una red y cuando hay conexion
+  //carga la página
   render() {
     let noNetworkError = (this.state.web3 ?
       <h3 className="no-network">Aplicacion de Prueba</h3> :

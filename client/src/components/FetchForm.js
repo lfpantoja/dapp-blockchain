@@ -15,13 +15,12 @@ class FetchForm extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
+  //Función que se ejecuta al inicio de carga de página por parte del cliente
   componentDidMount() {
     this.loadSubmissionById(this.props.match.params.id);
   }
 
-  UNSAFE_componentWillMount() {
-  }
-
+  //se busca el paper por el id seleccionado
   async loadSubmissionById(hashId) {
     this.setState({loadingSubmission: true, submission: {}});
     try {
@@ -34,6 +33,7 @@ class FetchForm extends Component {
     }
   }
 
+  //carga de paper
   loadSubmission(hashId) {
     return new Promise(async (resolve, reject) => {
       let submission = {};
@@ -116,6 +116,7 @@ class FetchForm extends Component {
     });
   }
 
+  //Interfaz de paper en específico
   renderSubmission(submission) {
     return (
       <div key={submission.hashId}>

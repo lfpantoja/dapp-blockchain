@@ -17,9 +17,7 @@ class SearchForm extends Component {
     this.loadPaper = this.loadPaper.bind(this);
   }
 
-  UNSAFE_componentWillMount() {
-  }
-
+  //Función para cargar los papers segun el autor ingresado por el usuario
   async loadSearchSubmissions(Autor) {
     let {autor} = this.state;
     console.log("parametro: ", Autor);
@@ -44,6 +42,7 @@ class SearchForm extends Component {
     }
   }
 
+  //carga de paper
   loadSubmission(hashId) {
     return new Promise((resolve, reject) => {
       let submission = {};
@@ -70,10 +69,12 @@ class SearchForm extends Component {
     });
   }
 
+  //Funcion para actualizar lo que esta en una caja de texto
   updateInputValue(e, field) {
     this.setState({[field]: e.target.value});
   }
 
+  //Función para esperar a que se llene una caja de texto
   validForm() {
     if (!this.props.hashStoreContractInstance) {
       return false;
@@ -81,12 +82,14 @@ class SearchForm extends Component {
     return this.state.autor;
   }
 
+  //Carga de paper
   loadPaper(Autor) {
     this.setState({loadSearch: true});
     this.loadSearchSubmissions(Autor);
     this.setState({loadSearch: false});
   }
 
+  //Formato de impresión de paper
   renderSubmission(submission) {
     return (
       <div className="submission" key={submission.hashId}>
@@ -98,8 +101,9 @@ class SearchForm extends Component {
       </div>);
   }
 
-  //this.state.searchSubmissions.map((submission) => this.renderSubmission(submission))
-
+  //interfaz de busqueda
+  //se imprime título, cuadro de busqueda y botón para buscar
+  //se imprime los papers
   render() {
     return (
       <div>

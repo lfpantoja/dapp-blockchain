@@ -18,10 +18,7 @@ class SubmitForm extends Component {
     };
   }
 
-  componentDidMount() {
-    
-  }
-
+  //Función que se ejecuta en parte del cliente y servidor
   UNSAFE_componentWillMount() {
     this.loadPrice();
   }
@@ -47,6 +44,7 @@ class SubmitForm extends Component {
     });
   }
 
+  //carga de precio
   loadPrice() {
     ax = [];
     console.log(this.props);

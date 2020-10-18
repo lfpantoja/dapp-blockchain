@@ -14,10 +14,12 @@ class RecentSubmissions extends Component {
     };
   }
 
+  //Funcion que se ejecutarpa en el lado del servidor y cliente
   UNSAFE_componentWillMount() {
     this.loadRecentSubmissions();
   }
 
+  //Carga de los 10 papers recientes
   async loadRecentSubmissions() {
     this.setState({loadingRecentSubmissions: true, recentSubmissions: []});
     try {
@@ -37,6 +39,7 @@ class RecentSubmissions extends Component {
     }
   }
 
+  //Carga de paper en especifico por id
   loadSubmission(hashId) {
     return new Promise((resolve, reject) => {
       let submission = {};
@@ -63,6 +66,7 @@ class RecentSubmissions extends Component {
     });
   }
 
+  //formato para impresión de paper
   renderSubmission(submission) {
     return (
       <div className="submission" key={submission.hashId}>
@@ -74,6 +78,7 @@ class RecentSubmissions extends Component {
       </div>);
   }
 
+  //cuando termine de cargar los papers estos serán impresos en la página principal
   render() {
     return (
       <div>
