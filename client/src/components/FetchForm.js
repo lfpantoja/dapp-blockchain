@@ -10,7 +10,6 @@ class FetchForm extends Component {
     this.state = {
       loadingSubmission: false,
       submission: {
-        
       }
     };
     this.handleClick = this.handleClick.bind(this);
@@ -79,7 +78,7 @@ class FetchForm extends Component {
     });
   }
 
-  //Fóuncin de reconocimiento
+  //Función de reconocimiento
   handleClick = () => {
     console.log('Botón reconocimiento');
     console.log('Paper: ', this.props.match.params.id);
@@ -94,13 +93,13 @@ class FetchForm extends Component {
         //declaracion de cuentas y valor a transferir
         var autor = values[0];
         var cuentaActual = this.props.web3.eth.defaultAccount;
-        const amountToSend = 0.001;
         submission.hashId = this.props.match.params.id;
         console.log('Cuenta Actual: ', cuentaActual);
         console.log('Autor: ', autor);
 
         if(autor === cuentaActual){
           console.log('El mismo autor esta viendo el paper');
+          this.props.addNotification("No se puede realizar un reconocimiento a uno mismo", "error");
         }
         else{
           console.log('Reconocimiento');
@@ -155,9 +154,9 @@ class FetchForm extends Component {
     );
   }
 
-  updateHashId(e) {
-    this.setState({'hashId': e.target.value});
-  }
+  // updateHashId(e) {
+  //   this.setState({'hashId': e.target.value});
+  // }
 
   render() {
     return (
