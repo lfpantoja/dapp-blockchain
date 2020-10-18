@@ -13,8 +13,6 @@ contract Publications {
         string content;
         // Creacion de variable de tiempo
         uint timestamp;
-        // other versions
-        uint[] versions;
     }
 
     // Mapeo de Papers
@@ -59,7 +57,6 @@ contract Publications {
         papers[paperId].sender = msg.sender;
         papers[paperId].content = _hashContent;
         papers[paperId].timestamp = block.timestamp;
-        papers[paperId].versions.push(paperId);
 
         return(paperId);
     }
@@ -82,8 +79,8 @@ contract Publications {
     * @dev Encontrar paper por Id
     * @param _id Hash Id
     */
-    function getPaperByID(uint _id) view public returns (address hashSender, string memory hashContent, uint hashTimestamp, uint hashNumVersions) {   
-        return (papers[_id].sender,papers[_id].content, papers[_id].timestamp,papers[_id].versions.length); 
+    function getPaperByID(uint _id) view public returns (address hashSender, string memory hashContent, uint hashTimestamp) {   
+        return (papers[_id].sender,papers[_id].content, papers[_id].timestamp); 
     }
 
     /**
