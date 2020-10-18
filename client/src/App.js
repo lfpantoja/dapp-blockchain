@@ -6,6 +6,7 @@ import {Container} from 'react-bootstrap';
 import SubmitForm from './components/SubmitForm';
 import RecentSubmissions from './components/RecentSubmissions';
 import FetchForm from './components/FetchForm';
+import SearchForm from './components/SearchForm';
 import Header from './components/Header';
 import './css/bootstrap.css';
 import './App.css'
@@ -25,7 +26,8 @@ class App extends Component {
       web3: null,
       submitFormDisplayed: false,
       fetchFormDisplayed: false,
-      recentSubmissionsDisplayed: false
+      recentSubmissionsDisplayed: false,
+      searchFormDisplayed: false,
     }
   }
 
@@ -149,6 +151,9 @@ class App extends Component {
                                     hashStoreContractInstance={this.state.hashStoreContractInstance}
                                     addNotification={this.addNotification.bind(this)} {...props}/>} />
                 <Route path={'/show/:id'} component={ (props) => <FetchForm web3={this.state.web3} ipfs={this.state.ipfs}
+                                    hashStoreContractInstance={this.state.hashStoreContractInstance}
+                                    addNotification={this.addNotification.bind(this)} {...props}/>} />
+                <Route path={'/search'} component={ (props) => <SearchForm web3={this.state.web3} ipfs={this.state.ipfs}
                                     hashStoreContractInstance={this.state.hashStoreContractInstance}
                                     addNotification={this.addNotification.bind(this)} {...props}/>} />
                 </Switch>
