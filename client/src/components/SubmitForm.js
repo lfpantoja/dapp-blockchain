@@ -10,6 +10,7 @@ class SubmitForm extends Component {
     super(props);
     this.getPaperS = this.getPaperS.bind(this);
     this.state = {
+      loadingAll: false,
       loadingPrice: false,
       fullName: '',
       title: '',
@@ -28,6 +29,7 @@ class SubmitForm extends Component {
     let submissionAux = {};
     let numA = 0;
     await this.props.hashStoreContractInstance.getLastPaperId().then((values) => {
+      this.setState({loafingAll: true});
       for(let i = 1;i<=values.words[0];i++){
         numA = values.words[0];
         this.props.hashStoreContractInstance.getPaperByID(i).then(async (values) => {
@@ -37,6 +39,7 @@ class SubmitForm extends Component {
             console.log(ax.length);
             if(i===numA){
               this.props.addNotification("Carga Completa", "success");
+              this.setState({loafingAll: false});
             }
           });
         });
@@ -205,10 +208,10 @@ class SubmitForm extends Component {
           </Form.Group>
           
           <div><small>Precio por Paper: {this.props.web3.utils.fromWei(this.state.price, 'ether')} ETH</small></div>
-          <Loader loaded={!this.state.savingText}>
+          <Loader loaded={!this.state.savingText && !this.state.loadingAll}>
           <Button
             type="submit" className="mt-3 pure-button pure-input-1-2 button-success"
-            disabled={!this.validForm() || this.state.savingText} 
+            disabled={!this.validForm() || this.state.savingText || this.state.loadingAll} 
             onClick={() => this.saveText()}>
               Subir         
           </Button>

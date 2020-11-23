@@ -9,10 +9,11 @@ class SearchForm extends Component {
     super(props);
     
     this.state = {
+      loadingSearchAll:false,
       loadingSearchSubmissions:false,
       searchSubmissions: [],
       loadSearch:false,
-      autor: ''
+      parametro: ''
     };
     this.loadPaper = this.loadPaper.bind(this);
   }
@@ -20,15 +21,39 @@ class SearchForm extends Component {
   //Función para cargar los papers segun el autor ingresado por el usuario
   async loadSearchSubmissions(Autor) {
     console.log("parametro: ", Autor);
-    
     this.setState({loadingSearchSubmissions: true, searchSubmissions: []});
-    try {
+    try {      
       let searchSubmissions = [];
       let lastHashId = await this.props.hashStoreContractInstance.lastPaperId();
       lastHashId = lastHashId.toNumber();
       for (let i = 1; i <= lastHashId; i++) {
         let submission = await this.loadSubmission(i);
-        if(Autor === submission.fullName){
+        console.log("m: ",submission.fullName.search(Autor));
+        if(submission.fullName.search(Autor) >= 0){
+            searchSubmissions.push(submission);
+        }
+      }
+      this.setState({loadingSearchSubmissions: false, searchSubmissions: searchSubmissions});
+      this.props.addNotification("Búsqueda completa", "success");
+    }
+    catch (err) {
+      this.setState({loadingSearchSubmissions: false});
+      this.props.addNotification(err.message, "error");
+    }
+  }
+
+  //Función para cargar los papers segun el título ingresado por el usuario
+  async loadSearchSubmissionsTitle(Titulo) {
+    console.log("parametro T: ", Titulo);
+    this.setState({loadingSearchSubmissions: true, searchSubmissions: []});
+    try {      
+      let searchSubmissions = [];
+      let lastHashId = await this.props.hashStoreContractInstance.lastPaperId();
+      lastHashId = lastHashId.toNumber();
+      for (let i = 1; i <= lastHashId; i++) {
+        let submission = await this.loadSubmission(i);
+        console.log("m: ",submission.title.search(Titulo));
+        if(submission.title.search(Titulo) >= 0){
             searchSubmissions.push(submission);
         }
       }
@@ -43,6 +68,7 @@ class SearchForm extends Component {
 
   //carga de paper
   loadSubmission(hashId) {
+    this.setState({loadSearchAll: true});
     return new Promise((resolve, reject) => {
       let submission = {};
       this.props.hashStoreContractInstance.getPaperByID(hashId).then((values) => {
@@ -61,6 +87,7 @@ class SearchForm extends Component {
           submission.fullName = data.fullName;
           submission.file = data.file;
           resolve(submission);
+          this.setState({loadSearchAll: false});
         });
       }).catch((err) => {
         return reject(err);
@@ -78,14 +105,24 @@ class SearchForm extends Component {
     if (!this.props.hashStoreContractInstance) {
       return false;
     }
-    return this.state.autor;
+    return this.state.parametro;
   }
 
   //Carga de paper
   loadPaper(Autor) {
     this.setState({loadSearch: true});
+    //this.setState({loadSearchAll: true});
     this.loadSearchSubmissions(Autor);
     this.setState({loadSearch: false});
+    //this.setState({loadSearchAll: false});
+  }
+
+  loadPaperTitulo(Titulo) {
+    this.setState({loadSearch: true});
+    //this.setState({loadSearchAll: true});
+    this.loadSearchSubmissionsTitle(Titulo);
+    this.setState({loadSearch: false});
+    //this.setState({loadSearchAll: false});
   }
 
   //Formato de impresión de paper
@@ -111,21 +148,30 @@ class SearchForm extends Component {
             <Col xs={10}>
             <Form className="mt-3">
             <center>
-            <h3>Búsqueda de Papers</h3>
+            <h3>Búsqueda de Artículos</h3>
             <Form.Group controlId="formGroupAuthors" className="mt-4">
-            <FormControl required type = "text" onChange = {e => this.updateInputValue(e, 'autor')} 
-                placeholder = "Autores" value={this.state.autor}/>
+            <FormControl required type = "text" onChange = {e => this.updateInputValue(e, 'parametro')} 
+                placeholder = "Autores o Título" value={this.state.parametro}/>
             </Form.Group>
             <Button 
             className="mt-3 pure-button pure-input-1-2 button-success"
             disabled={!this.validForm()} 
             onClick={
-                () => this.loadPaper(this.state.autor)
+                () => this.loadPaper(this.state.parametro)
             }
-            >Buscar
+            >Buscar por Autor
+            </Button>
+            
+            <Button 
+            className="mt-3 pure-button pure-input-1-2 button-success"
+            disabled={!this.validForm()} 
+            onClick={
+                () => this.loadPaperTitulo(this.state.parametro)
+            }
+            >Buscar por Título
             </Button>
             <div className="submissions">
-            <Loader loaded={!this.state.loadingSearchSubmissions}>
+            <Loader loaded={!this.state.loadingSearchSubmissions && !this.state.loadingSearchAll}>
                 {this.state.searchSubmissions.map((submission) => this.renderSubmission(submission))}
             </Loader>
             </div>
