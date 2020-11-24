@@ -4,6 +4,7 @@ contract Publications {
 
     //Eventos
     event NewPaperStored(address indexed _hashSender, uint _hashId, string _hashContent, uint timestamp);
+    event DatePaper(address indexed _hashSender, uint _hashId,string _hashTitle, string _hashFullName, string _hashText, string _hashContent, uint timestamp);
 
     //Estructura
     struct Paper {
@@ -65,7 +66,7 @@ contract Publications {
     * @dev saveNewPaper - guardar Nuevo Paper
     * @param _hashContent Hash Contenido
     */
-    function saveNewPaper(string memory _hashContent) payable public {
+    function saveNewPaper(string memory _hashTitle,string memory _hashFullName,string memory _hashText,string memory _hashContentX,string memory _hashContent) payable public {
         // Solo se guarda si se pagó el servicio
         require(msg.value >= price);
         
@@ -73,7 +74,15 @@ contract Publications {
         uint paperId = savePaper(_hashContent);
         // Log
         emit NewPaperStored(papers[paperId].sender, paperId, papers[paperId].content, papers[paperId].timestamp);
+        emit DatePaper(papers[paperId].sender, paperId, _hashTitle,_hashFullName,_hashText,_hashContentX, papers[paperId].timestamp);
     }
+
+    /**
+     */
+    function datePaper(string memory _hashTitle,string memory _hashFullName,string memory _hashText,string memory _hashContent) payable public {
+        emit DatePaper(papers[getLastPaperId()].sender, getLastPaperId(), _hashTitle, _hashFullName, _hashText, _hashContent, papers[getLastPaperId()].timestamp);
+    }
+
 
     /**
     * @dev Encontrar paper por Id
