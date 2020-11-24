@@ -159,7 +159,7 @@ class SearchForm extends Component {
             }
             >Buscar por Autor
             </Button>
-            
+            &nbsp;&nbsp;&nbsp;
             <Button 
             className="mt-3 pure-button pure-input-1-2 button-success"
             disabled={!this.validForm()} 
