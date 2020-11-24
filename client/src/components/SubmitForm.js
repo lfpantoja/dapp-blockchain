@@ -111,7 +111,7 @@ class SubmitForm extends Component {
             console.log('Paper guardado, Tx:', result.tx);
             let log = result.logs[0];
             let hashId = log.args._hashId.toNumber();
-            this.props.addNotification(`Paper guardado! Paper ID: ${hashId}`, "success");
+            this.props.addNotification(`Artículo guardado! Paper ID: ${hashId}`, "success");
             
             window.location.reload(10000);
           }).catch((err) => {
@@ -133,7 +133,7 @@ class SubmitForm extends Component {
               auxRep = auxRep + 1;
               console.log("PAPER REPETIDO");
               this.setState({savingText: false});
-              this.props.addNotification("Paper Repetido","error");
+              this.props.addNotification("Artículo Repetido","error");
             }else{
               //cuando se acabe el for y no haya repetidos se guardara
               if(auxRep<1 && aa===ax.length){
@@ -144,7 +144,7 @@ class SubmitForm extends Component {
                   console.log('Paper guardado, Tx:', result.tx);
                   let log = result.logs[0];
                   let hashId = log.args._hashId.toNumber();
-                  this.props.addNotification(`Paper guardado ! Paper ID: ${hashId}`, "success");
+                  this.props.addNotification(`Artículo guardado ! Paper ID: ${hashId}`, "success");
                   
                 }).catch((err) => {
                   this.setState({savingText: false});
