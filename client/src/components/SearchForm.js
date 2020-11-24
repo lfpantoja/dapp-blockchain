@@ -20,7 +20,7 @@ class SearchForm extends Component {
 
   //Función para cargar los papers segun el autor ingresado por el usuario
   async loadSearchSubmissions(Autor) {
-    console.log("parametro: ", Autor);
+    //console.log("parametro: ", Autor);
     this.setState({loadingSearchSubmissions: true, searchSubmissions: []});
     try {      
       let searchSubmissions = [];
@@ -28,8 +28,7 @@ class SearchForm extends Component {
       lastHashId = lastHashId.toNumber();
       for (let i = 1; i <= lastHashId; i++) {
         let submission = await this.loadSubmission(i);
-        console.log("m: ",submission.fullName.search(Autor));
-        if(submission.fullName.search(Autor) >= 0){
+        if(submission.fullName.toLowerCase().search(Autor.toLowerCase()) >= 0){
             searchSubmissions.push(submission);
         }
       }
@@ -44,7 +43,7 @@ class SearchForm extends Component {
 
   //Función para cargar los papers segun el título ingresado por el usuario
   async loadSearchSubmissionsTitle(Titulo) {
-    console.log("parametro T: ", Titulo);
+    //console.log("parametro T: ", Titulo);
     this.setState({loadingSearchSubmissions: true, searchSubmissions: []});
     try {      
       let searchSubmissions = [];
@@ -52,8 +51,7 @@ class SearchForm extends Component {
       lastHashId = lastHashId.toNumber();
       for (let i = 1; i <= lastHashId; i++) {
         let submission = await this.loadSubmission(i);
-        console.log("m: ",submission.title.search(Titulo));
-        if(submission.title.search(Titulo) >= 0){
+        if(submission.title.toLowerCase().search(Titulo.toLowerCase()) >= 0){
             searchSubmissions.push(submission);
         }
       }

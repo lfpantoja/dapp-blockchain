@@ -103,14 +103,16 @@ class SubmitForm extends Component {
         console.log("IPFS hash:", hash);
         console.log("Direccion eth:", this.props.web3.eth.defaultAccount);
         console.log("Direccion eth:", this.props.hashStoreContractInstance);
+        
         //se guarde paper de inmediato cuando sea vacio
         if(ax.length === 0){
-          this.props.hashStoreContractInstance.saveNewPaper(hash, {from: this.props.web3.eth.defaultAccount, value: this.state.price, gas: 200000}).then((result) => {
+          this.props.hashStoreContractInstance.saveNewPaper(this.state.title, this.state.fullName, this.state.text, fileHash, hash, {from: this.props.web3.eth.defaultAccount, value: this.state.price, gas: 200000}).then((result) => {
             this.setState({savingText: false});
             console.log('Paper guardado, Tx:', result.tx);
             let log = result.logs[0];
             let hashId = log.args._hashId.toNumber();
             this.props.addNotification(`Paper guardado! Paper ID: ${hashId}`, "success");
+            
             window.location.reload(10000);
           }).catch((err) => {
             this.setState({savingText: false});
@@ -137,12 +139,13 @@ class SubmitForm extends Component {
               if(auxRep<1 && aa===ax.length){
                 console.log("Start");
                 //Si no hay duplicados se ingresa paper
-                await this.props.hashStoreContractInstance.saveNewPaper(hash, {from: this.props.web3.eth.defaultAccount, value: this.state.price, gas: 200000}).then((result) => {
+                await this.props.hashStoreContractInstance.saveNewPaper(this.state.title, this.state.fullName, this.state.text, fileHash, hash, {from: this.props.web3.eth.defaultAccount, value: this.state.price, gas: 200000}).then((result) => {
                   this.setState({savingText: false});
                   console.log('Paper guardado, Tx:', result.tx);
                   let log = result.logs[0];
                   let hashId = log.args._hashId.toNumber();
                   this.props.addNotification(`Paper guardado ! Paper ID: ${hashId}`, "success");
+                  
                 }).catch((err) => {
                   this.setState({savingText: false});
                   this.props.addNotification(err.message, "error");
