@@ -45,6 +45,7 @@ class SubmitForm extends Component {
         });
       }
     });
+    this.setState({loadingAll: false});
   }
 
   //carga de precio
