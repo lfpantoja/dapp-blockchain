@@ -10,7 +10,7 @@ let getWeb3 = new Promise(function (resolve, reject) {
   async function getAccount() {
     let web3 = window.web3;
     if (typeof web3 !== 'undefined') {
-      let provider = new Web3.providers.HttpProvider('http://localhost:7545');
+      let provider = new Web3.providers.HttpProvider('http://192.168.1.10:7545');
       web3 = new Web3(provider);
       console.log('Usando web3 local.');
     }
