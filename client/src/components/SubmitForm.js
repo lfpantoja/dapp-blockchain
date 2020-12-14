@@ -130,7 +130,8 @@ class SubmitForm extends Component {
             
           }else{
             submissionAux.title = dataAux.title;
-            if (submissionAux.title === data.title){
+            submissionAux.hashDoc = dataAux.file;
+            if (submissionAux.title === data.title || submissionAux.hashDoc === data.file){
               auxRep = auxRep + 1;
               console.log("PAPER REPETIDO");
               this.setState({savingText: false});
@@ -215,7 +216,7 @@ class SubmitForm extends Component {
           <Loader loaded={!this.state.savingText }>
           <Button
             type="submit" className="mt-3 pure-button pure-input-1-2 button-success"
-            disabled={!this.validForm() || this.state.savingText || this.state.loadingAll} 
+            disabled={!this.validForm() || this.state.savingText && this.state.loadingAll} 
             onClick={() => this.saveText()}>
               Subir         
           </Button>
